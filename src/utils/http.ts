@@ -1,7 +1,6 @@
 /* 封装一个请求库 */
 
-/* 创建一个实例 */
-import axios from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 /* 默认配置 */
 const defaultConfig = {
@@ -9,37 +8,58 @@ const defaultConfig = {
   baseUrl: '',
 };
 
+class Http {
+  /* 构造函数，调用实例的时候默认会调用 */
+  constructor() {
+    this.httpInterceptorsRequest();
+    this.httpInterceptorsResponse();
+  }
 
-/* 创建请求实例 */
-const axiosInstance = axios.create(defaultConfig);
+  /* 定义为私有属性 */
+  private static axiosInstance = axios.create(defaultConfig);
 
+  /* 定义私有方法 */
+  /* 请求拦截器 */
+  private httpInterceptorsRequest() {
+    Http.axiosInstance.interceptors.request.use(
+      (config: AxiosRequestConfig) => {
+        return config;
+      },
+      (err) => {
+        return Promise.reject(err);
+      },
+    );
+  }
 
-/* 请求拦截器 */
-axiosInstance.interceptors.request.use(config => {
-  return config;
-}, err => {
-  return Promise.reject(err);
-});
+  /* 响应拦截器 */
+  private httpInterceptorsResponse() {
+    Http.axiosInstance.interceptors.response.use(
+      (response: AxiosResponse) => {
+        return response;
+      },
+      (err) => {
+        return Promise.reject(err);
+      },
+    );
+  }
 
-/* 响应拦截器 */
-axiosInstance.interceptors.response.use(config => {
-  return config;
-}, err => {
-  return Promise.reject(err);
-});
+  /* 定义一些公有的方法 */
 
+  /* 封装get请求 */
+  public httpGet<T>(url: string, params: AxiosRequestConfig): Promise<T> {
+    return Http.axiosInstance
+      .get(url, params)
+      .then((res) => res.data)
+      .catch();
+  }
 
-/* 封装get请求 */
-function httpRequestGet(url, params) {
-  return axiosInstance.get(url, params).then(res => res.data).catch();
+  /* 封装post请求 */
+  public httpPost<T>(url: string, params: AxiosRequestConfig): Promise<T> {
+    return Http.axiosInstance
+      .post(url, params)
+      .then((res) => res.data)
+      .catch();
+  }
 }
 
-/* 封装post请求 */
-function httpRequestPost(url, params) {
-  return axiosInstance.post(url, params).then(res => res.data).catch();
-}
-
-export default {
-  httpRequestGet,
-  httpRequestPost,
-};
+export const http = new Http();
