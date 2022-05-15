@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    /* 模块化标准 */
+    "module": "esnext",
+    /* 选择模块化解析策略 */
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    /* 指定编译时是否生成 map 文件 */
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    /* 表示编译时要包含的一些库文件 */
+    "lib": ["esnext", "dom"],
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+}
