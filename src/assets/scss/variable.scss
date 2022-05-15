@@ -1,0 +1,11 @@
+/* 定义一些全局的变量或者函数 */
+
+$red: red;
+
+
+/* 文字超出隐藏 */
+@mixin line-text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

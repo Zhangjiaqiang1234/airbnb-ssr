@@ -31,7 +31,8 @@ const router = useRouter();
   <router-view />
 </template>
 
-<style>
+<style lang="scss">
+@import "@/assets/scss/home/index.scss";
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -39,5 +40,9 @@ const router = useRouter();
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+
+  button {
+    font-size: 40px;
+  }
 }
 </style>

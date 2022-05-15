@@ -33,7 +33,10 @@ proxy.$message({
     跳转到个人中心
   </button>
   <el-button>Default</el-button>
+  <div class="text">奥术大师大奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥</div>
 </template>
 
-<style>
+<style lang="scss">
+@import "@/assets/scss/home/index.scss";
+
 </style>
