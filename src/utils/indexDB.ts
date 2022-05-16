@@ -19,19 +19,20 @@ export default class DB {
   public openStore(storeName: string, keyPath: string, indexs?: Array<string>) {
     /* 参数： 1、数据库名称 2、数据库版本，注意：这里的数据库版本只能逐渐增加，不能减少 */
     const request = window.indexedDB.open(this.dbName, 1);
-    return new Promise(() => {
+    return new Promise((resolve, reject) => {
       request.onsuccess = (event: any) => {
         console.log('数据库打开成功');
 
         this.db = event.target.result;
 
         console.log(event);
+        resolve(true);
       };
 
       request.onerror = (event) => {
         console.log('数据库打开失败');
 
-        console.log(event);
+        reject(event);
       };
 
       /* 数据库版本升级时触发 */
@@ -79,17 +80,20 @@ export default class DB {
       .transaction([storeName], 'readwrite')
       .objectStore(storeName);
     const request = store.put({ ...data, updateTime: new Date().getTime() });
-    /* 写入成功触发 */
-    request.onsuccess = (event: any) => {
-      console.log('数据写入成功');
-      console.log(event);
-    };
 
-    /* 写入失败触发 */
-    request.onerror = (event: any) => {
-      console.log('数据写入失败');
-      console.log(event);
-    };
+    return new Promise((resolve, reject) => {
+      /* 写入成功触发 */
+      request.onsuccess = (event: any) => {
+        console.log('数据写入成功');
+        resolve(event);
+      };
+
+      /* 写入失败触发 */
+      request.onerror = (event: any) => {
+        console.log('数据写入失败');
+        reject(event);
+      };
+    });
   }
 
   /**
@@ -105,17 +109,20 @@ export default class DB {
       .transaction([storeName], 'readwrite')
       .objectStore(storeName);
     const request = store.delete(key);
-    /* 写入成功触发 */
-    request.onsuccess = (event: any) => {
-      console.log('删除成功');
-      console.log(event);
-    };
 
-    /* 写入失败触发 */
-    request.onerror = (event: any) => {
-      console.log('删除失败');
-      console.log(event);
-    };
+    return new Promise((resolve, reject) => {
+      /* 写入成功触发 */
+      request.onsuccess = (event: any) => {
+        console.log('删除成功');
+        resolve(event);
+      };
+
+      /* 写入失败触发 */
+      request.onerror = (event: any) => {
+        console.log('删除失败');
+        reject(event);
+      };
+    });
   }
 
   /**
@@ -127,12 +134,10 @@ export default class DB {
     /* 新增数据也就是将数据写入到数据仓库中 */
 
     /* 新建一个事务，第2个参数：操作模式：是只读的还是读写 */
-    const store = this.db
-      .transaction(storeName)
-      .objectStore(storeName);
+    const store = this.db.transaction(storeName).objectStore(storeName);
     const request = store.getAll();
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       /* 写入成功触发 */
       request.onsuccess = (event: any) => {
         console.log('查询所有数据成功');
@@ -143,7 +148,7 @@ export default class DB {
       /* 写入失败触发 */
       request.onerror = (event: any) => {
         console.log('查询所有数据失败');
-        console.log(event);
+        reject(event);
       };
     });
   }
@@ -157,20 +162,21 @@ export default class DB {
     /* 新增数据也就是将数据写入到数据仓库中 */
 
     /* 新建一个事务，第2个参数：操作模式：是只读的还是读写 */
-    const store = this.db
-      .transaction(storeName)
-      .objectStore(storeName);
+    const store = this.db.transaction(storeName).objectStore(storeName);
     const request = store.get(key);
-    /* 写入成功触发 */
-    request.onsuccess = (event: any) => {
-      console.log('查询某一条数据成功');
-      console.log(event.target.result);
-    };
 
-    /* 写入失败触发 */
-    request.onerror = (event: any) => {
-      console.log('查询某一条数据失败');
-      console.log(event);
-    };
+    return new Promise((resolve, reject) => {
+      /* 写入成功触发 */
+      request.onsuccess = (event: any) => {
+        console.log('查询某一条数据成功');
+        resolve(event.target.result);
+      };
+
+      /* 写入失败触发 */
+      request.onerror = (event: any) => {
+        console.log('查询某一条数据失败');
+        reject(event);
+      };
+    });
   }
 }

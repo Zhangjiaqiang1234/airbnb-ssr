@@ -15,6 +15,8 @@ export async function fetchElephant() {
   const airbnb = new IndexDB('airbnb');
   /* 打开对象仓库 */
   await airbnb.openStore('elephant', 'id', ['nose', 'ear']);
-  const result = await airbnb.getList('elephant');
-  console.log('---',result);
+  const result = await airbnb.getList('elephant').then(res => {
+    return { code: '000000', message: '操作成功',result: res , success: true };
+  });
+  return result;
 }

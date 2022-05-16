@@ -3,7 +3,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { h, getCurrentInstance } from 'vue';
 import { fetchRoomList, fetchElephant } from '../../api';
 import { useI18n } from 'vue-i18n';
-import IndexDB from '../../utils/indexDB';
+import { log } from 'console';
 
 const router = useRouter();
 const route = useRoute();
@@ -19,43 +19,21 @@ proxy.$message({
   ]),
 });
 
-const getRoomList = () => {
-  fetchRoomList();
-};
-
-getRoomList();
-
-/* 数据库相关操作 */
-const airbnbDB = new IndexDB('airbnb');
-
-airbnbDB.openStore('elephant', 'id', ['nose', 'ear']);
-
-/* 新增和修改 */
-function addDB(storeName: string) {
-  airbnbDB.updateItem(storeName, {
-    nose: '44m',
-    ear: '比较小',
+/* 真实接口 */
+function getRoomList() {
+  fetchRoomList().then(res => {
+    console.log('真实接口',res);
   });
 }
 
-/* 删除数据 */
-function deleteDB(storeName: string, key: number | string) {
-  airbnbDB.deleteItem(storeName, key);
-}
+getRoomList();
 
-/* 查询所有数据，查询对象仓库数据 */
-function getObjectStore(storeName: string) {
-  airbnbDB.getList(storeName);
-}
 
-/* 查询某一条数据，查询对象仓库数据 */
-function getObjectStoreItem(storeName: string, key: number | string) {
-  airbnbDB.getItem(storeName,key);
-}
-
-/* 获取 mock  数据 */
+/*  mock  接口 */
 function getElephant() {
-  fetchElephant();
+  fetchElephant().then(res => {
+    console.log('mock接口',res);
+  });
 }
 
 getElephant();
@@ -64,11 +42,6 @@ getElephant();
 
 <template>
   {{ t("message.home") }}
-
-  <el-button @click="addDB('elephant')">增/改</el-button>
-  <el-button @click="deleteDB('elephant', 2)">删除</el-button>
-  <el-button @click="getObjectStore('elephant')">查询所有数据</el-button>
-  <el-button @click="getObjectStoreItem('elephant', 1)">查询某一条数据</el-button>
 </template>
 
 <style lang="scss">
