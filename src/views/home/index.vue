@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router';
 import { h, getCurrentInstance } from 'vue';
-import { fetchRoomList } from '../../api';
+import { fetchRoomList, fetchElephant } from '../../api';
+import { useI18n } from 'vue-i18n';
+import IndexDB from '../../utils/indexDB';
+
 const router = useRouter();
 const route = useRoute();
+
+const { t } = useI18n();
 
 /* 因为 vue2 中是 this.$message 使用的，但是 vue3 中没有 this，所以需要创建一个上下文来处理 */
 const { proxy }: any = getCurrentInstance();
@@ -19,28 +24,51 @@ const getRoomList = () => {
 };
 
 getRoomList();
+
+/* 数据库相关操作 */
+const airbnbDB = new IndexDB('airbnb');
+
+airbnbDB.openStore('elephant', 'id', ['nose', 'ear']);
+
+/* 新增和修改 */
+function addDB(storeName: string) {
+  airbnbDB.updateItem(storeName, {
+    nose: '44m',
+    ear: '比较小',
+  });
+}
+
+/* 删除数据 */
+function deleteDB(storeName: string, key: number | string) {
+  airbnbDB.deleteItem(storeName, key);
+}
+
+/* 查询所有数据，查询对象仓库数据 */
+function getObjectStore(storeName: string) {
+  airbnbDB.getList(storeName);
+}
+
+/* 查询某一条数据，查询对象仓库数据 */
+function getObjectStoreItem(storeName: string, key: number | string) {
+  airbnbDB.getItem(storeName,key);
+}
+
+/* 获取 mock  数据 */
+function getElephant() {
+  fetchElephant();
+}
+
+getElephant();
+
 </script>
 
 <template>
-  首页
+  {{ t("message.home") }}
 
-  <button
-    @click="
-      () =>
-        router.push({
-          path: '/mine',
-          query: {
-            id: 1,
-          },
-        })
-    "
-  >
-    跳转到个人中心
-  </button>
-  <el-button>Default</el-button>
-  <div class="text">
-    奥术大师大奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥奥
-  </div>
+  <el-button @click="addDB('elephant')">增/改</el-button>
+  <el-button @click="deleteDB('elephant', 2)">删除</el-button>
+  <el-button @click="getObjectStore('elephant')">查询所有数据</el-button>
+  <el-button @click="getObjectStoreItem('elephant', 1)">查询某一条数据</el-button>
 </template>
 
 <style lang="scss">

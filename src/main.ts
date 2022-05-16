@@ -1,11 +1,12 @@
-import { createApp } from "vue";
-import App from "./App.vue";
+import { createApp } from 'vue';
+import App from './App.vue';
 
-import router from "./router";
+import router from './router';
 
-import ElementPlus, { ElMessage } from "element-plus";
+import ElementPlus, { ElMessage } from 'element-plus';
 /* 引入 element-ui 基础样式文件 */
-import "element-plus/dist/index.css";
+import 'element-plus/dist/index.css';
+import i18n from './language/i18n';
 
 /* 创建应用实例 */
 const app = createApp(App);
@@ -19,4 +20,7 @@ app.config.globalProperties.$message = ElMessage;
 /* 将 element-ui 挂载到根实例 */
 app.use(ElementPlus);
 
-app.mount("#app");
+/* 引入国际化语言包 */
+app.use(i18n);
+
+app.mount('#app');
