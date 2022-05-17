@@ -3,7 +3,6 @@ import { useRouter, useRoute } from 'vue-router';
 import { h, getCurrentInstance } from 'vue';
 import { fetchRoomList, fetchElephant } from '../../api';
 import { useI18n } from 'vue-i18n';
-import { log } from 'console';
 
 const router = useRouter();
 const route = useRoute();
@@ -21,23 +20,19 @@ proxy.$message({
 
 /* 真实接口 */
 function getRoomList() {
-  fetchRoomList().then(res => {
-    console.log('真实接口',res);
+  fetchRoomList().then((res) => {
+    console.log('真实接口', res);
   });
 }
-
 getRoomList();
-
 
 /*  mock  接口 */
 function getElephant() {
-  fetchElephant().then(res => {
-    console.log('mock接口',res);
+  fetchElephant().then((res) => {
+    console.log('mock接口', res);
   });
 }
-
 getElephant();
-
 </script>
 
 <template>
