@@ -1,36 +1,46 @@
-import home from "@/views/home/index.vue";
-import mine from "@/views/mine/index.vue";
+import home from '@/views/home/index.vue';
+import mine from '@/views/mine/index.vue';
+import login from '@/views/login/index.vue';
 
 
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router';
 
 /* 定义路由 */
 const routes = [
   {
-    path: "/home",
-    name: "home",
+    path: '/home',
+    name: 'home',
     component: home,
     meta: {
-      title: "",
+      title: '',
       keepAlive: false,
     },
   },
   {
-    path: "/mine",
-    name: "mine",
+    path: '/mine',
+    name: 'mine',
     component: mine,
     meta: {
-      title: "",
+      title: '',
+      keepAlive: false,
+    },
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: login,
+    meta: {
+      title: '',
       keepAlive: false,
     },
   },
 ];
 
 /* 创建实例 */
-const router =  createRouter({
+const router = createRouter({
   /* 是否支持 hash */
   history: createWebHistory(),
-  routes
-})
+  routes,
+});
 
 export default router;

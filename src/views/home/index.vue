@@ -36,7 +36,7 @@ getElephant();
 </script>
 
 <template>
-  {{ t("message.home") }}
+  这里是 home
 </template>
 
 <style lang="scss">

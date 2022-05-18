@@ -17,7 +17,6 @@ export async function saveLanguageApi(lang: any) {
     background: 'rgba(0, 0, 0, 0.1)',
   });
 
-
   await airbnbDB.openStore('language', 'id', ['name']);
   const resultOr: IResultOr = await airbnbDB.getItem('language', 1).then(res => {
     return { code: '000000', message: '操作成功', result: res || null, success: true };

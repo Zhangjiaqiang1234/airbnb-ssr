@@ -9,8 +9,12 @@ import en from 'element-plus/es/locale/lang/en';
 
 import { saveLanguageApi, fetchLanguageApi } from '../../api/layout';
 
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
 const activeIndex = ref('orders');
 
+// eslint-disable-next-line no-unused-vars
 const emit = defineEmits<{(e: 'changeLang', language: any): void }>();
 
 function handleSelect(e: any) {
@@ -34,13 +38,12 @@ function saveLanguage(language:any) {
   });
 }
 
-
 /* Mock 接口：获取当前语言包 */
 function getLanguage() {
   fetchLanguageApi().then((res:any) => {
-    const { success, result } = res;
-    const { name } = result;
-    if (success) {
+    if (res?.success && res?.result) {
+      const { name } = res?.result;
+
       if (name === 'zh') {
         /* 切换为中文 */
         emit('changeLang', zhCn);
@@ -65,12 +68,12 @@ getLanguage();
       mode="horizontal"
       @select="handleSelect"
     >
-      <el-menu-item index="orders">房屋订单中心</el-menu-item>
-      <el-menu-item index="records">历史足迹</el-menu-item>
+      <el-menu-item index="orders">{{ t("header.orders") }}</el-menu-item>
+      <el-menu-item index="records">{{ t("header.records") }}</el-menu-item>
       <el-sub-menu index="language">
-        <template #title>国际化切换</template>
+        <template #title>{{ t("header.language") }}</template>
         <el-menu-item index="zh">中文</el-menu-item>
-        <el-menu-item index="en">英文</el-menu-item>
+        <el-menu-item index="en">English</el-menu-item>
       </el-sub-menu>
       <!-- 头像 -->
       <el-menu-item index="avatar">
@@ -85,5 +88,5 @@ getLanguage();
 </template>
 
 <style lang="scss">
-@import "@/assets/scss/layout/index.scss";
+@import "@/assets/scss/layout/commonHeader.scss";
 </style>

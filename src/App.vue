@@ -8,13 +8,16 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn';
 import en from 'element-plus/es/locale/lang/en';
 
 import { ref } from 'vue';
-import headerCommon from './components/layout/headerCommon.vue';
+import commonHeader from './components/layout/commonHeader.vue';
+import commonFooter from './components/layout/commonFooter.vue';
+import { useRoute } from 'vue-router';
 
 import { useI18n } from 'vue-i18n';
 const { locale: localeLanguage } = useI18n();
 
 
-// const router = useRouter();
+const route = useRoute();
+
 
 const locale = ref(zhCn);
 const changeLang = (language: any) => {
@@ -25,19 +28,19 @@ const changeLang = (language: any) => {
 
 <template>
   <el-config-provider :locale="locale">
-    <!-- <button @click="changeLang(zhCn)">中文</button>
-    <button @click="changeLang(en)">英文</button>
-    <router-link to="/home">首页</router-link>
-    <router-link to="/mine">个人中心</router-link>
-     -->
-
 
     <!-- 头部 -->
-    <headerCommon @changeLang="changeLang" />
-    123  - {{localeLanguage}}
+    <commonHeader v-show="!route.fullPath.indexOf('login')" @changeLang="changeLang" />
 
     <!-- 主体 -->
-    <router-view />
+    <div class="container">
+    主体 - {{ localeLanguage }}
+
+      <router-view />
+    </div>
+
+    <!-- 底部 -->
+    <commonFooter  v-show="!route.fullPath.indexOf('login')" />
   </el-config-provider>
 </template>
 
