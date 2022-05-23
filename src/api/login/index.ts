@@ -5,7 +5,7 @@ import { IResultOr } from '../interface';
 import { getQueryCookie } from '../../utils/util';
 import airbnb from '../../db'; // 引入数据库和对象仓库
 
-const storeName = Object.keys(airbnb.userObjectStore)[0];
+const storeName = Object.keys(airbnb.userObjectStore)[0]; // web_user
 
 // mock接口：用户注册
 export async function userSignApi(params: any) {

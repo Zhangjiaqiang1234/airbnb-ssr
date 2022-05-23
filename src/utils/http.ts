@@ -46,7 +46,7 @@ class Http {
   /* 定义一些公有的方法 */
 
   /* 封装get请求 */
-  public httpGet<T>(url: string, params: AxiosRequestConfig): Promise<T> {
+  public httpRequestGet<T>(url: string, params: AxiosRequestConfig): Promise<T> {
     return Http.axiosInstance
       .get(url, params)
       .then((res) => res.data)
@@ -54,7 +54,7 @@ class Http {
   }
 
   /* 封装post请求 */
-  public httpPost<T>(url: string, params: AxiosRequestConfig): Promise<T> {
+  public httpRequestPost<T>(url: string, params: AxiosRequestConfig): Promise<T> {
     return Http.axiosInstance
       .post(url, params)
       .then((res) => res.data)

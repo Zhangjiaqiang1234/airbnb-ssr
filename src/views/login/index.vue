@@ -1,56 +1,28 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
-
 import { useI18n } from 'vue-i18n';
 
-interface IRuleForm {
-  mobile: string;
-  password: string;
-}
+import { useRouter } from 'vue-router';
+import useFormProperties from '@/composables/login/useFormProperties';
+import useFormOperates from '@/composables/login/useFormOperates';
 
+const router = useRouter();
 const { t } = useI18n();
-
-const activeName = ref('login');
-const loginText = ref(t('login.loginBtn'));
-
-const ruleFormRef = ref();
-const ruleForm: IRuleForm = reactive({
-  mobile: '',
-  password: '',
-});
-const rules = reactive({
-  mobile: [
-    {
-      required: true,
-      min: 11,
-      max: 11,
-      message: t('login.placeMobile'),
-      trigger: 'blur',
-    },
-  ],
-  password: [
-    {
-      required: true,
-      message: t('login.placePass'),
-      trigger: 'blur',
-    },
-  ],
-});
+const { ruleForm, loginText, ruleFormRef, activeName, rules } =
+  useFormProperties(t);
+const { userSign, userLogin } = useFormOperates(router, ruleForm);
 function handleClick(e: any) {
-  console.log(e);
-  const { name, label } = e.props;
-  if (name === 'login') {
-    loginText.value = t('login.loginBtn');
-  } else if (name === 'sign') {
-    loginText.value = t('login.signBtn');
-  }
-  console.log(name, label);
+  const { name } = e.props;
+  loginText.value = t(`login['${name}Btn']`);
 }
 
 function submitForm() {
   ruleFormRef.value.validate((valid: any) => {
     if (valid) {
-      alert('成功');
+      if (activeName.value === 'sign') {
+        userSign(ruleForm);
+      } else if (activeName.value === 'login') {
+        userLogin(ruleForm);
+      }
     } else {
       return false;
     }
@@ -60,9 +32,7 @@ function submitForm() {
 
 <template>
   <div class="login-page">
-    <!-- 左侧部分 -->
     <div class="left-part"></div>
-    <!-- 右侧表单部分 -->
     <div class="right-part">
       <div class="login-panel">
         <!-- tabs -->

@@ -1,74 +1,89 @@
-<!-- 公共顶部组件 -->
-
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, getCurrentInstance } from 'vue';
 /* element-plus 中文包 */
-import zhCn from 'element-plus/es/locale/lang/zh-cn';
+import zhCn from 'element-plus/lib/locale/lang/zh-cn';
 /* element-plus 英文包 */
-import en from 'element-plus/es/locale/lang/en';
-
+import en from 'element-plus/lib/locale/lang/en';
 import { saveLanguageApi, fetchLanguageApi } from '../../api/layout';
-
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+import { userLogoutApi } from '@/api/login';
+import { IResultOr } from '@/api/interface';
 
 const { t } = useI18n();
 const router = useRouter();
-
+/* 当前上下文 */
+const { proxy }: any = getCurrentInstance();
 const activeIndex = ref('orders');
 
-// eslint-disable-next-line no-unused-vars
-const emit = defineEmits<{(e: 'changeLang', language: any): void }>();
+/* eslint-disable */
+const emit = defineEmits<{
+  (e: "changeLang", language: any): void;
+}>();
 
 function handleSelect(e: any) {
-  if (e === 'zh') {
-    /* 切换为中文 */
-    emit('changeLang', zhCn);
-    saveLanguage('zh');
-  } else if (e === 'en') {
-    emit('changeLang', en);
-    saveLanguage('en');
-  } else if (e === 'login') {
-    router.push({ name: 'login' });
+  if (e === "zh") {
+    emit("changeLang", zhCn);
+    saveLanguage("zh");
+  } else if (e === "en") {
+    emit("changeLang", en);
+    saveLanguage("en");
+  } else if (e === "login") {
+    router.push({ name: "login" });
+  } else if (e === "logout") {
+    userLogout();
   }
+  console.log(e);
 }
 
-/* Mock 接口：保存当前语言包 */
+// Mock接口：保存当前语言包
 function saveLanguage(language: any) {
   saveLanguageApi(language).then((res) => {
     const { success } = res;
     if (success) {
-      console.log('保存当前语言包成功');
+      console.log("保存当前语言包成功");
     }
   });
 }
 
-/* Mock 接口：获取当前语言包 */
+// Mock接口：保存当前语言包
 function getLanguage() {
-  fetchLanguageApi().then((res: any) => {
-    if (res?.success && res?.result) {
-      const { name } = res?.result;
-
-      if (name === 'zh') {
-        /* 切换为中文 */
-        emit('changeLang', zhCn);
-      } else if (name === 'en') {
-        emit('changeLang', en);
+  fetchLanguageApi().then((res) => {
+    const { success, result } = res;
+    const { name } = result;
+    if (success) {
+      if (name === "zh") {
+        emit("changeLang", zhCn);
+      } else if (name === "en") {
+        emit("changeLang", en);
       }
-      console.log('获取当前语言包成功');
+      console.log("获取当前语言包成功");
     }
   });
 }
+// getLanguage()
 
-// getLanguage();
+const userStatus = localStorage.getItem("userStatus");
+// 登出接口
+function userLogout() {
+  userLogoutApi().then((res: IResultOr) => {
+    const { success, message } = res;
+    if (success) {
+      proxy.$message.success(message);
+      router.push({ name: "login" });
+      localStorage.setItem("userStatus", "0");
+    } else {
+      proxy.$message.error(message);
+    }
+  });
+}
 </script>
 
 <template>
   <div class="header-common">
-    <!-- logo -->
     <img class="logo" src="../../assets/images/layout/logo.png" alt="爱此迎" />
     <el-menu
-      :defaultActive="activeIndex"
+      :default-active="activeIndex"
       class="el-menu-demo"
       mode="horizontal"
       @select="handleSelect"
@@ -80,15 +95,17 @@ function getLanguage() {
         <el-menu-item index="zh">中文</el-menu-item>
         <el-menu-item index="en">English</el-menu-item>
       </el-sub-menu>
-      <!-- 头像 -->
-      <el-menu-item index="avatar">
-        <img
-          class="avatar"
-          src="../../assets/images/layout/avatar.jpg"
-          alt="个人中心"
-        />
-      </el-menu-item>
-      <el-menu-item index="login"
+      <el-sub-menu index="avatar" v-if="userStatus === '1'">
+        <template #title>
+          <img
+            class="avatar"
+            src="../../assets/images/layout/avatar.jpg"
+            alt="个人中心"
+          />
+        </template>
+        <el-menu-item index="logout">退出</el-menu-item>
+      </el-sub-menu>
+      <el-menu-item index="login" v-else
         >{{ t("login.loginTab") }}/{{ t("login.signTab") }}</el-menu-item
       >
     </el-menu>
