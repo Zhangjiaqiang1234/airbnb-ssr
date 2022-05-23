@@ -1,12 +1,10 @@
 export default {
-  header: {
-    // 头部组件
+  header: { // 头部组件
     orders: 'Housing order center',
     records: 'The historical footprints',
     language: 'Language',
   },
-  footer: {
-    // 底部组件
+  footer: { // 底部组件
     airbnb: 'Airbnb',
     careers: 'Careers',
     news: 'News',
@@ -28,5 +26,13 @@ export default {
     service: 'Service',
     help: 'Help',
     neighbors: 'Neighbors',
+  },
+  login: {
+    loginBtn: 'Log in Airbnb',
+    signBtn: 'Sign up',
+    loginTab: 'Log in',
+    signTab: 'Sign up',
+    placeMobile: 'Please  write correct mobile number',
+    placePass: 'Please white corret password',
   },
 };

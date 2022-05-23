@@ -1,12 +1,10 @@
 export default {
-  header: {
-    // 头部组件
+  header: { // 头部组件
     orders: '房源订单中心',
     records: '历史足迹',
     language: '语言',
   },
-  footer: {
-    // 底部组件
+  footer: { // 底部组件
     airbnb: '爱彼迎',
     careers: '工作机会',
     news: '爱彼迎新闻',
@@ -28,5 +26,13 @@ export default {
     service: '客服支持',
     help: '帮助',
     neighbors: '邻里支持',
+  },
+  login: {
+    loginBtn: '进入爱此迎',
+    signBtn: '立即注册',
+    loginTab: '登录',
+    signTab: '注册',
+    placeMobile: '请输入正确的手机号',
+    placePass: '请输入正确的密码',
   },
 };

@@ -1,9 +1,20 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
+
+import { useI18n } from 'vue-i18n';
+
+interface IRuleForm {
+  mobile: string;
+  password: string;
+}
+
+const { t } = useI18n();
+
 const activeName = ref('login');
+const loginText = ref(t('login.loginBtn'));
 
 const ruleFormRef = ref();
-const ruleForm = reactive({
+const ruleForm: IRuleForm = reactive({
   mobile: '',
   password: '',
 });
@@ -13,20 +24,27 @@ const rules = reactive({
       required: true,
       min: 11,
       max: 11,
-      message: '请输入正确的手机号码',
+      message: t('login.placeMobile'),
       trigger: 'blur',
     },
   ],
   password: [
     {
       required: true,
-      message: '请输入正确的密码',
+      message: t('login.placePass'),
       trigger: 'blur',
     },
   ],
 });
-function handleClick(e) {
+function handleClick(e: any) {
   console.log(e);
+  const { name, label } = e.props;
+  if (name === 'login') {
+    loginText.value = t('login.loginBtn');
+  } else if (name === 'sign') {
+    loginText.value = t('login.signBtn');
+  }
+  console.log(name, label);
 }
 
 function submitForm() {
@@ -42,34 +60,34 @@ function submitForm() {
 
 <template>
   <div class="login-page">
-      <!-- 左侧部分 -->
+    <!-- 左侧部分 -->
     <div class="left-part"></div>
     <!-- 右侧表单部分 -->
     <div class="right-part">
       <div class="login-panel">
         <!-- tabs -->
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="登录" name="login"></el-tab-pane>
-          <el-tab-pane label="注册" name="sign"></el-tab-pane>
+          <el-tab-pane :label="t('login.loginTab')" name="login"></el-tab-pane>
+          <el-tab-pane :label="t('login.signTab')" name="sign"></el-tab-pane>
         </el-tabs>
         <!-- 表单组件 -->
         <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules">
           <el-form-item prop="mobile">
             <el-input
-              placeholder="请输入正确的手机号"
+              :placeholder="t('login.placeMobile')"
               v-model="ruleForm.mobile"
             ></el-input>
           </el-form-item>
           <el-form-item prop="password">
             <el-input
-              placeholder="请输入正确的密码"
+              :placeholder="t('login.placePass')"
               v-model="ruleForm.password"
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button class="login-btn" type="primary" @click="submitForm"
-              >登录</el-button
-            >
+            <el-button class="login-btn" type="primary" @click="submitForm">{{
+              loginText
+            }}</el-button>
           </el-form-item>
         </el-form>
       </div>

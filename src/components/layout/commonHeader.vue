@@ -10,7 +10,10 @@ import en from 'element-plus/es/locale/lang/en';
 import { saveLanguageApi, fetchLanguageApi } from '../../api/layout';
 
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+
 const { t } = useI18n();
+const router = useRouter();
 
 const activeIndex = ref('orders');
 
@@ -25,12 +28,14 @@ function handleSelect(e: any) {
   } else if (e === 'en') {
     emit('changeLang', en);
     saveLanguage('en');
+  } else if (e === 'login') {
+    router.push({ name: 'login' });
   }
 }
 
 /* Mock 接口：保存当前语言包 */
-function saveLanguage(language:any) {
-  saveLanguageApi(language).then(res => {
+function saveLanguage(language: any) {
+  saveLanguageApi(language).then((res) => {
     const { success } = res;
     if (success) {
       console.log('保存当前语言包成功');
@@ -40,7 +45,7 @@ function saveLanguage(language:any) {
 
 /* Mock 接口：获取当前语言包 */
 function getLanguage() {
-  fetchLanguageApi().then((res:any) => {
+  fetchLanguageApi().then((res: any) => {
     if (res?.success && res?.result) {
       const { name } = res?.result;
 
@@ -83,6 +88,9 @@ getLanguage();
           alt="个人中心"
         />
       </el-menu-item>
+      <el-menu-item index="login"
+        >{{ t("login.loginTab") }}/{{ t("login.signTab") }}</el-menu-item
+      >
     </el-menu>
   </div>
 </template>
