@@ -9,12 +9,15 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { userLogoutApi } from '@/api/login';
 import { IResultOr } from '@/api/interface';
+import { useStore } from 'vuex';
 
 const { t } = useI18n();
 const router = useRouter();
 /* 当前上下文 */
 const { proxy }: any = getCurrentInstance();
 const activeIndex = ref('orders');
+const store = useStore();
+
 
 /* eslint-disable */
 const emit = defineEmits<{
@@ -65,7 +68,7 @@ function getLanguage() {
 
 const userStatus = localStorage.getItem("userStatus");
 // 登出接口
-function userLogout() {
+function userLogout() {  
   userLogoutApi().then((res: IResultOr) => {
     const { success, message } = res;
     if (success) {

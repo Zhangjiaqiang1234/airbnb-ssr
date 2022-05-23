@@ -1,3 +1,4 @@
+/* 存放登录所需表单对象 */
 import { ref, reactive, Ref } from 'vue';
 interface IRuleForm {
   mobile: string;
