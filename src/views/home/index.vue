@@ -32,7 +32,7 @@ function getElephant() {
     console.log('mock接口', res);
   });
 }
-getElephant();
+// getElephant();
 </script>
 
 <template>

@@ -60,7 +60,7 @@ function getLanguage() {
   });
 }
 
-getLanguage();
+// getLanguage();
 </script>
 
 <template>
