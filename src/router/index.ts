@@ -2,10 +2,13 @@ import home from '@/views/home/index.vue';
 import mine from '@/views/mine/index.vue';
 import login from '@/views/login/index.vue';
 
+import {
+  createRouter,
+  createMemoryHistory,
+  createWebHistory,
+  createWebHashHistory,
+} from 'vue-router';
 
-import { createRouter, createWebHistory } from 'vue-router';
-
-/* 定义路由 */
 const routes = [
   {
     path: '/home',
@@ -36,10 +39,8 @@ const routes = [
   },
 ];
 
-/* 创建实例 */
 const router = createRouter({
-  /* 是否支持 hash */
-  history: createWebHistory(),
+  history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
   routes,
 });
 

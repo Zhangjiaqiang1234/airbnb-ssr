@@ -65,7 +65,6 @@ function getLanguage() {
 }
 // getLanguage()
 
-const userStatus = localStorage.getItem("userStatus");
 // 登出接口
 function userLogout() {
   userLogoutApi().then((res: IResultOr) => {
