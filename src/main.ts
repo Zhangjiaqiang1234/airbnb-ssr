@@ -6,7 +6,7 @@ import 'element-plus/dist/index.css';
 import i18n from './language/i18n';
 
 import airbnb from './db'; // 引入数据库和对象仓库
-import { store } from './store';
+import { store, key } from './store';
 router.beforeEach((to, from, next) => {
   airbnb.airbnbDB.openStore({
     ...airbnb.languageObjectStore,
@@ -22,7 +22,7 @@ const app = createApp(App);
 /* 全局引入 element-ui 组件 */
 app.config.globalProperties.$message = ElMessage;
 /* 使用 vuex4  */
-app.use(store);
+app.use(store, store);
 /* 将路由挂载到根实例上 */
 app.use(router);
 /* 将 element-ui 挂载到根实例 */

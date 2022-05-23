@@ -1,7 +1,7 @@
 import { IResultOr } from '@/api/interface';
 import { userSignApi, userLoginApi } from '@/api/login';
 import { getCurrentInstance } from 'vue';
-import { useStore } from 'vuex';
+import { useStore } from '@/store';
 import { Router } from 'vue-router';
 interface IRuleForm {
   mobile: string;

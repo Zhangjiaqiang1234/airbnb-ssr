@@ -3,7 +3,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { h, getCurrentInstance } from 'vue';
 import { fetchRoomList, fetchElephant } from '../../api';
 import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
+import { useStore } from '@/store';
 
 const router = useRouter();
 const route = useRoute();

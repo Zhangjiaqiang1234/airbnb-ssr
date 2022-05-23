@@ -8,7 +8,7 @@
 import commonHeader from './components/layout/commonHeader.vue';
 import commonFooter from './components/layout/commonFooter.vue';
 import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
+import { useStore } from '@/store';
 
 const store = useStore();
 const route = useRoute();

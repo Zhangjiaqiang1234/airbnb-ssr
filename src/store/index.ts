@@ -1,7 +1,22 @@
-import { createStore } from 'vuex';
+import { createStore, Store, useStore as baseUseStore } from 'vuex';
 import { saveLanguageApi } from '@/api/layout';
+import { InjectionKey } from 'vue';
 
-export const store = createStore({
+// 为 store state 声明类型
+export interface AllStateTypes {
+  count: number;
+  locale: any;
+  userStatus: Number;
+}
+
+// 定义 injection key
+export const key: InjectionKey<Store<AllStateTypes>> = Symbol('storeKey');
+
+export function useStore() {
+  return baseUseStore(key);
+}
+
+export const store = createStore<AllStateTypes>({
   state: {
     count: 1,
     locale: null, // 语言包
